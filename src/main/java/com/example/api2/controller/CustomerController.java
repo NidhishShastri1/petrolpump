@@ -35,7 +35,7 @@ public class CustomerController {
   
     
 
-    @GetMapping("/fetch-details")
+    @PostMapping("/fetch-details")
     public ResponseEntity<Map<String, Object>> getCustomerDetails(
             @RequestParam("mobileNumber") String mobileNumber) {
         logger.info("Fetching customer details for mobileNumber: {}", mobileNumber);
