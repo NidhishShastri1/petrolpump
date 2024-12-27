@@ -12,4 +12,5 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     // New custom query to find a customer by phone number
     Customer findByMobileNumber(String mobileNumber);
+    Optional<Customer> findBycustomerId(String customerId);
 }
