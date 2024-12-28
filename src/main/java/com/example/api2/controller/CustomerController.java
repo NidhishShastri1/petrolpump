@@ -6,7 +6,6 @@ import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +28,7 @@ public class CustomerController {
     // Fetch Customer Details by Mobile Number (Existing)
     @PostMapping("/fetch-details")
     public ResponseEntity<Map<String, Object>> getCustomerDetails(
-            @RequestParam("mobileNumber") String mobileNumber) {
+            @RequestParam String mobileNumber) {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -57,8 +56,8 @@ public class CustomerController {
     // Generate Customer Details (For Generating Random Customer ID and Card Number)
     @PostMapping("/generate-customer-details")
     public ResponseEntity<Map<String, String>> generateCustomerDetails(
-            @RequestParam("customerName") String customerName,
-            @RequestParam("mobileNumber") String mobileNumber) {
+            @RequestParam String customerName,
+            @RequestParam String mobileNumber) {
 
         Map<String, String> response = new HashMap<>();
 
@@ -89,8 +88,8 @@ public class CustomerController {
     // Add New Customer (Save Customer to Database)
     @PostMapping("/add")
     public ResponseEntity<Map<String, String>> addCustomer(
-            @RequestParam("customerName") String customerName,
-            @RequestParam("mobileNumber") String mobileNumber) {
+            @RequestParam String customerName,
+            @RequestParam String mobileNumber) {
 
         Map<String, String> response = new HashMap<>();
 
@@ -125,4 +124,6 @@ public class CustomerController {
 
         return ResponseEntity.ok(response);  // Returning a 200 OK with customer details
     }
+    
+    
 }

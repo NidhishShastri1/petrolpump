@@ -12,38 +12,57 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.api2.model.Customer;
 import com.example.api2.repository.CustomerRepository;
 
-import org.springframework.http.MediaType;  // Correct import for MediaType
+
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-public class RedeemController {  // Capitalize class name
+public class RedeemController {
 
     @Autowired
     private CustomerRepository customerRepository;
 
+
+
+
+    /**
+     * Retrieve all customers with their points information.
+     *
+     * @return List of all customers
+     */
     @GetMapping("/api/points")
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
-    @PostMapping(value = "/api/add-points", consumes = "multipart/form-data") // Ensure it's expecting form data
+    /**
+     * Endpoint to purchase a gift for a customer.
+     *
+     * @param customerId ID of the customer
+     * @param giftId     ID of the gift to be purchased
+     * @return Response with the purchase result
+     */
+    
+    @PostMapping(value = "/api/add-points")
     public ResponseEntity<?> addPoints(
         @RequestParam("customerId") String customerId,
         @RequestParam("points") int points
     ) {
-    	System.out.println("Received customerId: " + customerId);
+        System.out.println("Received customerId: " + customerId);
+
         // Find the customer by ID
         Optional<Customer> customerOpt = customerRepository.findBycustomerId(customerId);
         if (!customerOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found.");
         }
 
         Customer customer = customerOpt.get();
-        customer.setPoints(customer.getPoints() + points); // Ensure method name matches your Customer model
-        customerRepository.save(customer); // Save updated customer
+        customer.setPoints(customer.getPoints() + points); // Add points to the customer's account
+        customerRepository.save(customer); // Save the updated customer
 
-        return ResponseEntity.ok(customer); // Return updated customer
+        return ResponseEntity.ok(customer); // Return the updated customer object
     }
+
+   
 }

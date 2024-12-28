@@ -1,8 +1,14 @@
 package com.example.api2.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import com.example.api2.model.Customer;
+import com.example.api2.model.CustomerReport;
 
 @Repository
 public interface CustomerRepository extends MongoRepository<Customer, String> {
@@ -12,5 +18,10 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
 
     // New custom query to find a customer by phone number
     Customer findByMobileNumber(String mobileNumber);
+
+    // Fetch customer data for report generation with required fields
+    @Query("{ }")  // This fetches all customers. You can refine it as needed.
+    List<CustomerReport> findAllCustomerReports();
+
     Optional<Customer> findBycustomerId(String customerId);
 }

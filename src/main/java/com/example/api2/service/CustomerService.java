@@ -16,6 +16,7 @@ public class CustomerService {
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+    
 
     // Method to check if a customer already exists based on customerName and mobileNumber
     public boolean customerExists(String customerName, String mobileNumber) {
@@ -35,6 +36,9 @@ public class CustomerService {
             // If the customer exists, return null or throw an exception as needed
             return null; // Or you can throw an exception like DuplicateCustomerException
         }
+        
+        
+        
 
         // Generate Customer ID and Card Number
         String customerId = generateCustomerId();
