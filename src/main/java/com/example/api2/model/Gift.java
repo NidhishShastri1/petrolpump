@@ -16,13 +16,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 	    private int stock;
 
 	    // Constructors, Getters, and Setters
-	    public Gift(String itemName, int numberOfItems, LocalDate dateOfArrival) {
+	    public Gift(String itemName, int numberOfItems, LocalDate dateOfArrival, int pointsNeeded) {
 	        this.itemName = itemName;
 	        this.numberOfItems = numberOfItems;
 	        this.dateOfArrival = dateOfArrival;
+	        this.pointsNeeded = pointsNeeded;
 	    }
 
-	    public String getItemName() {
+	   
+
+		
+
+
+
+		public String getItemName() {
 	        return itemName;
 	    }
 
@@ -36,6 +43,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 	    public void setNumberOfItems(int numberOfItems) {
 	        this.numberOfItems = numberOfItems;
+	        this.stock = numberOfItems;
 	    }
 
 	    public LocalDate getDateOfArrival() {

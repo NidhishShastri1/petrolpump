@@ -29,10 +29,11 @@ public class GiftController {
     public ResponseEntity<String> addGiftIn(
             @RequestParam String itemName,
             @RequestParam int numberOfItems,
-            @RequestParam String dateOfArrival) {
+            @RequestParam String dateOfArrival,
+            @RequestParam int pointsNeeded) {
         try {
             // Convert the form-data into a GiftIn object
-            Gift gift = new Gift(itemName, numberOfItems, LocalDate.parse(dateOfArrival));
+            Gift gift = new Gift(itemName, numberOfItems, LocalDate.parse(dateOfArrival), pointsNeeded);
 
             // Save the gift to the inventory
             giftService.addGiftIn(gift);
@@ -43,7 +44,7 @@ public class GiftController {
         }
     }
 
-    // New API to fetch gift stock
+    // API to fetch gift stock
     @GetMapping("/stock")
     public ResponseEntity<List<Gift>> getGiftStock() {
         try {
@@ -54,6 +55,21 @@ public class GiftController {
             return ResponseEntity.ok(giftStock);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // API to define points needed to redeem a gift
+    @PostMapping(value = "/set-points", consumes = "multipart/form-data")
+    public ResponseEntity<String> setGiftPoints(
+            @RequestParam String itemName,
+            @RequestParam int pointsRequired) {
+        try {
+            // Call the service to update points required for the gift
+            giftService.setGiftPoints(itemName, pointsRequired);
+
+            return ResponseEntity.ok("Points required to redeem the gift have been set.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error setting gift points: " + e.getMessage());
         }
     }
 }

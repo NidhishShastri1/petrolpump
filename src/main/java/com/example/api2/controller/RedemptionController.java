@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.api2.model.PurchaseDetails;
+import com.example.api2.model.Redemption;
 import com.example.api2.service.GiftService;
+import com.example.api2.service.RedemptionService;
 
 import java.util.List;
 import java.util.Map;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/redemption")
 public class RedemptionController {
@@ -32,17 +34,28 @@ public class RedemptionController {
         }
     }
 
-    // API to process gift purchase
-    @PostMapping("/buy")
-    public ResponseEntity<String> purchaseGift(@RequestBody PurchaseDetails purchaseDetails) {
-        try {
-            giftService.purchaseGift(purchaseDetails);
-            return ResponseEntity.ok("Gift purchased successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+ 
+        @Autowired
+        private GiftService GiftService;
+
+
+        @PostMapping("/buy")
+        public ResponseEntity<?> buyGift(@RequestParam("pointsNeeded") int pointsNeeded,
+                                         @RequestBody Redemption redemption) {
+            try {
+                // Pass the necessary parameters to the service
+                RedemptionService redemptionService = new RedemptionService();
+                redemptionService.redeemGift(redemption.getCustomerId(), redemption.getGiftName(), pointsNeeded);
+                
+                return ResponseEntity.ok("Gift redeemed successfully.");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+            }
         }
-    }
+
 }
+
+
 
 
 
