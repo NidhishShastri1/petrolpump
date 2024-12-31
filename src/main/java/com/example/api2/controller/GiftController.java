@@ -62,10 +62,10 @@ public class GiftController {
     @PostMapping(value = "/set-points", consumes = "multipart/form-data")
     public ResponseEntity<String> setGiftPoints(
             @RequestParam String itemName,
-            @RequestParam int pointsRequired) {
+            @RequestParam int pointsNeeded) {
         try {
             // Call the service to update points required for the gift
-            giftService.setGiftPoints(itemName, pointsRequired);
+            giftService.setGiftPoints(itemName, pointsNeeded);
 
             return ResponseEntity.ok("Points required to redeem the gift have been set.");
         } catch (Exception e) {

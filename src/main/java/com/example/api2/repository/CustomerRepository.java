@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.api2.model.Customer;
 import com.example.api2.model.CustomerReport;
+import com.example.api2.model.Gift;
 
 @Repository
 public interface CustomerRepository extends MongoRepository<Customer, String> {
@@ -17,13 +18,14 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
     Customer findByCustomerNameAndMobileNumber(String customerName, String mobileNumber);
 
     // New custom query to find a customer by phone number
-    Customer findByMobileNumber(String mobileNumber);
+    Optional<Customer> findByMobileNumber(String mobileNumber);
 
     // Fetch customer data for report generation with required fields
     @Query("{ }")  // This fetches all customers. You can refine it as needed.
     List<CustomerReport> findAllCustomerReports();
 
     Optional<Customer> findBycustomerId(String customerId);
+    Optional<Customer> findByCardNumber(String cardNumber);
 }
 
 

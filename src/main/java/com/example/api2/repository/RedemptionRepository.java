@@ -7,4 +7,5 @@ import com.example.api2.model.Redemption;
 
 @Repository
 public interface RedemptionRepository extends MongoRepository<Redemption, String> {
+	
 }

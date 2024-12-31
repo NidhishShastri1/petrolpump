@@ -9,4 +9,5 @@ import com.example.api2.model.Gift;
 public interface GiftRepository extends MongoRepository<Gift, String> {
     // Custom query methods (if needed) can go here
 	 Gift findByitemName(String itemName);
+	  Gift findBypointsNeeded(int pointsNeeded);
 }

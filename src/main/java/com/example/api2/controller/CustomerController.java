@@ -2,6 +2,7 @@ package com.example.api2.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class CustomerController {
     }
 
     // Fetch Customer Details by Mobile Number (Existing)
-    @PostMapping("/fetch-details")
+    @PostMapping("/fetch")
     public ResponseEntity<Map<String, Object>> getCustomerDetails(
             @RequestParam String mobileNumber) {
 
@@ -40,7 +41,7 @@ public class CustomerController {
         }
 
         // Fetch customer from database
-        Customer customer = customerService.getCustomerByMobileNumber(mobileNumber);
+        Optional<Customer> customer = customerService.getCustomerByMobileNumber(mobileNumber);
         if (customer == null) {
             response.put("status", "error");
             response.put("message", "Customer not found.");
@@ -124,6 +125,31 @@ public class CustomerController {
 
         return ResponseEntity.ok(response);  // Returning a 200 OK with customer details
     }
+  
+     
+
+    @PostMapping("/block-card")
+    public ResponseEntity<?> blockCard(@RequestParam String cardNumber, @RequestParam String mobileNumber) {
+        Optional<Customer> customerOpt = customerService.getCustomerByCardNumber(cardNumber);
+        if (customerOpt.isPresent()) {
+            Customer customer = customerOpt.get();
+            customerService.blockCard(cardNumber, customer);
+            return ResponseEntity.ok("Card blocked successfully.");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+        @PostMapping("/generate-new-card")
+        public ResponseEntity<?> generateNewCard(@RequestParam String mobileNumber) {
+            Optional<Customer> customerOpt = customerService.getCustomerByMobileNumber(mobileNumber);
+            if (customerOpt.isPresent()) {
+                Customer customer = customerOpt.get();
+                Customer updatedCustomer = customerService.generateNewCard(customer);
+                return ResponseEntity.ok(updatedCustomer);
+            }
+            return ResponseEntity.status(404).body("Customer not found.");
+        }
+    }
+
     
-    
-}
+

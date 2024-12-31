@@ -1,10 +1,14 @@
 package com.example.api2.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.api2.model.BlockedCard;
 import com.example.api2.model.Customer;
+import com.example.api2.repository.BlockedCardRepository;
 import com.example.api2.repository.CustomerRepository;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -16,6 +20,9 @@ public class CustomerService {
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+    @Autowired
+    private BlockedCardRepository blockedCardRepository;
+
     
 
     // Method to check if a customer already exists based on customerName and mobileNumber
@@ -25,7 +32,7 @@ public class CustomerService {
     }
 
     // Method to fetch a customer by mobile number
-    public Customer getCustomerByMobileNumber(String mobileNumber) {
+    public Optional<Customer> getCustomerByMobileNumber(String mobileNumber) {
         return customerRepository.findByMobileNumber(mobileNumber);
     }
 
@@ -65,4 +72,31 @@ public class CustomerService {
         int randomNumber = 1000 + random.nextInt(9000); // Ensures a 4-digit number
         return "CARD" + randomNumber; // e.g., CARD1234
     }
+
+    public void blockCard(String cardNumber, Customer customer) {
+        // Store the blocked card details in the `blocked_cards` collection
+        BlockedCard blockedCard = new BlockedCard();
+        blockedCard.setCustomerId(customer.getCustomerId());
+        blockedCard.setName(customer.getCustomerName());
+        blockedCard.setContactNumber(customer.getMobileNumber());
+        blockedCard.setOldCardNumber(cardNumber);
+        blockedCardRepository.save(blockedCard);
+
+        // Remove the old card number from the `customers` collection
+        customer.setCardNumber(null);
+        customerRepository.save(customer);
+    }
+ // Generate a new card and update the customer record
+    public Customer generateNewCard(Customer customer) {
+    	String newCardNumber = "CARD" + (1000 + new Random().nextInt(9000));
+        customer.setCardNumber(newCardNumber);
+        return customerRepository.save(customer);
+    }
+
+	public Optional<Customer> getCustomerByCardNumber(String cardNumber) {
+		// TODO Auto-generated method stub
+		return customerRepository.findByCardNumber(cardNumber);
+	}
+    
+
 }

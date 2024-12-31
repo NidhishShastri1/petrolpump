@@ -21,6 +21,11 @@ public class RedemptionController {
     @Autowired
     private GiftService giftService;
 
+    private final RedemptionService redemptionService;
+
+    public RedemptionController(RedemptionService redemptionService) {
+        this.redemptionService = redemptionService;
+    }
     // API to fetch eligible gifts
     @GetMapping("/eligible-gifts")
     public ResponseEntity<List<Map<String, Object>>> getEligibleGifts(
